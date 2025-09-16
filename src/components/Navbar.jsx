@@ -96,39 +96,29 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <motion.button
+          <button
             onClick={() => setMobileMenu(!mobileMenu)}
-            whileTap={{ scale: 0.9 }}
-            className="md:hidden text-gray-300 hover:text-pink-400 transition-colors"
+            className="md:hidden text-gray-800 dark:text-gray-300 hover:text-pink-400 transition-colors"
           >
             {mobileMenu ? <X size={28} /> : <Menu size={28} />}
-          </motion.button>
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu with Animation */}
-      <AnimatePresence>
-        {mobileMenu && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="md:hidden bg-gradient-to-br from-black/80 via-purple-900/70 to-pink-800/60 backdrop-blur-lg px-6 py-6 text-gray-200 space-y-4"
-          >
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className="block text-lg font-semibold hover:text-pink-400"
-              >
-                {item.label}
-              </a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu */}
+      {mobileMenu && (
+        <div className="md:hidden bg-gradient-to-br from-black/80 via-purple-900/70 to-pink-800/60 backdrop-blur-lg px-6 py-6 text-gray-200 space-y-4">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={(e) => handleNavClick(e, item.id)}
+              className="block text-lg font-semibold hover:text-pink-400 text-left w-full"
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
