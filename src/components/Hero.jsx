@@ -1,134 +1,112 @@
 import { motion } from "framer-motion";
-import { TypeAnimation } from "react-type-animation";
-import heroImg from "../assets/personal.jpg";
+import { ExternalLink } from "lucide-react";
 
-export default function Hero() {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+const projects = [
+  {
+    title: "QuizzCrakerz",
+    description:
+      "A modern quiz web app with admin panel, user login/signup, subject-wise quizzes, result display & dynamic database integration.",
+    techStack: "Flask | MySQL | HTML | CSS | JavaScript",
+    rating: "6.5",
+    image: "/projects/quizzcrakerz.png",
+    link: "https://github.com/Dipesh-Mishra04/BCA-_Quizcrakerz",
+  },
+  {
+    title: "Student Management System",
+    description:
+      "Full CRUD system where admins can manage students, marks, subjects, and user roles with a responsive UI built on Flask + SQL.",
+    techStack: "Python | Flask | MySQL | Bootstrap",
+    rating: "6.2",
+    image: "/projects/studentmgmt.png",
+    link: "https://github.com/Dipesh-Mishra04/Student-Management-System",
+  },
+  {
+    title: "Flappy Bird Clone",
+    description:
+      "A fun & nostalgic game built using pure HTML, CSS, JavaScript. Includes background sound, scoring, pipe animation & restart option.",
+    techStack: "HTML | CSS | JavaScript",
+    rating: "5.8",
+    image: "/projects/flappybird.png",
+    link: "https://github.com/Dipesh-Mishra04/FlappyBird-Clone",
+  },
+];
 
+export default function Projects() {
   return (
     <section
-      id="hero"
-      className="relative w-full min-h-screen flex items-center justify-center 
-                 bg-gradient-to-b from-gray-900 via-black to-gray-900 
-                 overflow-hidden pt-20 sm:pt-24 md:pt-0 px-4 sm:px-6 text-white"
+      id="projects"
+      className="relative py-16 sm:py-20 px-4 sm:px-6 md:px-12 bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-hidden"
     >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute w-72 h-72 sm:w-96 sm:h-96 lg:w-[500px] lg:h-[500px] bg-primary/20 rounded-full blur-[100px] sm:blur-[150px] top-10 left-10 animate-pulse"></div>
-        <div className="absolute w-64 h-64 sm:w-80 sm:h-80 lg:w-[400px] lg:h-[400px] bg-accent/15 rounded-full blur-[80px] sm:blur-[120px] bottom-10 right-10 animate-ping"></div>
-        <div className="absolute w-32 h-32 sm:w-48 sm:h-48 bg-primary-glow/10 rounded-full blur-[60px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-glow-pulse"></div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="flex flex-col lg:flex-row items-center text-center lg:text-left gap-8 sm:gap-12 lg:gap-16 max-w-7xl mx-auto"
+      {/* Section Heading */}
+      <motion.h2
+        initial={{ opacity: 0, y: -40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-12 sm:mb-16 z-10 relative"
       >
-        {/* Profile Image */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.2 }}
-          className="relative group flex-shrink-0"
-        >
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary to-accent blur-2xl opacity-50 group-hover:opacity-70 transition-all duration-500 animate-glow-pulse"></div>
-          <div className="absolute inset-0 rounded-full border-2 sm:border-4 border-transparent group-hover:border-primary-glow animate-spin-slow"></div>
-          <img
-            src={heroImg}
-            alt="Dipesh Mishra - Software Developer"
-            className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full object-cover shadow-2xl border-2 sm:border-4 border-foreground group-hover:scale-105 transition-all duration-500"
-          />
-        </motion.div>
+        🚀 My <span className="text-pink-500">Projects</span>
+      </motion.h2>
 
-        {/* Text Section */}
-        <div className="max-w-3xl">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight"
-          >
-            <span className="text-foreground">Hi, I'm </span>
-            <span className="gradient-text-primary">Dipesh Mishra</span>
-          </motion.h1>
-
+      {/* Projects Grid */}
+      <div className="max-w-6xl mx-auto flex flex-col gap-16 sm:gap-20 relative z-10">
+        {projects.map((project, index) => (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-4 sm:mt-6 text-lg sm:text-xl lg:text-2xl xl:text-3xl text-muted-foreground font-medium"
+            key={index}
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+            className={`flex flex-col md:flex-row items-center gap-6 sm:gap-10 ${
+              index % 2 !== 0 ? "md:flex-row-reverse" : ""
+            }`}
           >
-            <TypeAnimation
-              sequence={[
-                "💻 Aspiring Software Developer",
-                2000,
-                "⚡ DSA Enthusiast", 
-                2000,
-                "🌐 Web Developer",
-                2000,
-              ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-            />
+            {/* Project Image */}
+            <motion.div
+              whileHover={{ scale: 1.05, rotate: 1 }}
+              transition={{ type: "spring", stiffness: 150 }}
+              className="md:w-1/2 w-full rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(255,0,128,0.3)] hover:shadow-[0_0_50px_rgba(255,0,128,0.6)] border border-gray-800"
+            >
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-auto max-h-[400px] object-contain rounded-2xl mx-auto"
+              />
+            </motion.div>
+
+            {/* Project Content */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="md:w-1/2 w-full text-center md:text-left px-2"
+            >
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
+                {project.title}
+              </h3>
+              <p className="text-gray-300 mb-4 leading-relaxed text-sm sm:text-base">
+                {project.description}
+              </p>
+              <p className="text-xs sm:text-sm text-cyan-400 font-semibold mb-2 tracking-wide">
+                {project.techStack}
+              </p>
+              <p className="text-yellow-400 font-bold mb-5 text-sm sm:text-base">
+                ⭐ {project.rating} / 7
+              </p>
+
+              {/* Button */}
+              <motion.a
+                whileHover={{ scale: 1.1, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg font-medium shadow-md hover:shadow-[0_0_25px_rgba(255,0,128,0.5)] transition-all duration-300 text-sm sm:text-base"
+              >
+                <ExternalLink size={18} /> View Code
+              </motion.a>
+            </motion.div>
           </motion.div>
-
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-4 sm:mt-6 text-muted-foreground text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl"
-          >
-            I craft impactful, scalable, and elegant digital solutions. With
-            expertise in Python, Flask and modern databases, I'm on a
-            journey to build products that make a difference.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-          >
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="btn-hero text-sm sm:text-base lg:text-lg font-medium"
-            >
-              🚀 View Projects
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="btn-glass text-sm sm:text-base lg:text-lg font-medium text-foreground hover:text-primary"
-            >
-              📩 Contact Me
-            </button>
-            <a
-              href="/resume.pdf"
-              download="Dipeshresume!.pdf"
-              className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-2xl shadow-xl hover:scale-105 hover:shadow-green-500/30 transition-all duration-300 text-sm sm:text-base lg:text-lg font-medium text-center"
-            >
-              📄 Download Resume
-            </a>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 text-muted-foreground text-xs sm:text-sm flex flex-col items-center"
-      >
-        <span className="animate-bounce">↓ Scroll to Explore</span>
-      </motion.div>
+        ))}
+      </div>
     </section>
   );
 }
