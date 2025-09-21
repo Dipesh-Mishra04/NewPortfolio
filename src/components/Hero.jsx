@@ -10,11 +10,23 @@ export default function Hero() {
     }
   };
 
+  const handleDownload = (e) => {
+    e.preventDefault();
+    // Create a temporary anchor element for download
+    const link = document.createElement('a');
+    link.href = '/Dipeshresume!.pdf';
+    link.download = 'Dipeshresume!.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <section
       id="hero"
-      className="relative w-full min-h-screen flex items-center justify-center 
-                 bg-gradient-to-b from-gray-900 via-black to-gray-900 
+      className="relative w-full min-h-screen flex items-center justify-center
+                 bg-gradient-to-b from-gray-900 via-black to-gray-900
                  overflow-hidden pt-20 sm:pt-24 md:pt-0 px-4 sm:px-6 text-white"
     >
       {/* Animated Background Elements */}
@@ -48,7 +60,7 @@ export default function Hero() {
 
         {/* Text Section */}
         <div className="max-w-3xl">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -68,7 +80,7 @@ export default function Hero() {
               sequence={[
                 "💻 Aspiring Software Developer",
                 2000,
-                "⚡ DSA Enthusiast", 
+                "⚡ DSA Enthusiast",
                 2000,
                 "🌐 Web Developer",
                 2000,
@@ -79,7 +91,7 @@ export default function Hero() {
             />
           </motion.div>
 
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -91,7 +103,7 @@ export default function Hero() {
           </motion.p>
 
           {/* CTA Buttons */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -109,13 +121,12 @@ export default function Hero() {
             >
               📩 Contact Me
             </button>
-            <a
-              href="/resume.pdf"
-              download="Dipeshresume!.pdf"
+            <button
+              onClick={handleDownload}
               className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-2xl shadow-xl hover:scale-105 hover:shadow-green-500/30 transition-all duration-300 text-sm sm:text-base lg:text-lg font-medium text-center"
             >
               📄 Download Resume
-            </a>
+            </button>
           </motion.div>
         </div>
       </motion.div>
