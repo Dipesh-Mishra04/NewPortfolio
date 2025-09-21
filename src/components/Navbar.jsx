@@ -1,30 +1,8 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { Sun, Moon, Menu, X } from "lucide-react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ============ 3D Logo ============
-function RotatingCube() {
-  const meshRef = useRef();
-  useFrame((state, delta) => {
-    meshRef.current.rotation.y += delta * 0.6;
-    meshRef.current.rotation.x += delta * 0.3;
-  });
-  return (
-    <mesh ref={meshRef} scale={1.1}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial
-        color="#ff4d6d"
-        metalness={0.6}
-        roughness={0.2}
-      />
-    </mesh>
-  );
-}
-
-// ============ Navbar ============
 export default function Navbar() {
   const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -51,74 +29,81 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/20 dark:bg-black/30 border-b border-white/10 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-        {/* Left Logo with 3D */}
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10">
-            <Canvas camera={{ position: [2, 2, 3], fov: 40 }}>
-              <ambientLight intensity={1.2} />
-              <pointLight position={[3, 3, 3]} intensity={1} />
-              <RotatingCube />
-              <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-            </Canvas>
-          </div>
+    <nav className="fixed top-0 left-0 w-full z-50 shadow-lg border-b border-slate-800
+                    bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+        {/* Left Logo */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 
+                          bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg shadow-md"></div>
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent cursor-pointer"
+            className="text-lg sm:text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent cursor-pointer"
             onClick={handleLogoClick}
           >
-            Dipesh's <span className="ml-1">Portfolio</span>
+            <span className="hidden sm:inline">Dipesh's Portfolio</span>
+            <span className="sm:hidden">Dipesh's Portfolio</span>
           </motion.h1>
         </div>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-10 font-semibold text-gray-200 dark:text-gray-300 ml-70">
+        <ul className="hidden lg:flex space-x-6 xl:space-x-8 font-semibold text-gray-200">
           {navItems.map((item, i) => (
             <motion.li
               key={item.id}
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.15 }}
+              transition={{ delay: i * 0.1 }}
             >
               <a
                 href={`#${item.id}`}
                 onClick={(e) => handleNavClick(e, item.id)}
-                className="hover:text-pink-400 transition-colors duration-300"
+                className="hover:text-sky-400 transition-colors duration-300 relative group"
               >
                 {item.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-sky-400 to-purple-400 transition-all duration-300 group-hover:w-full"></span>
               </a>
             </motion.li>
           ))}
         </ul>
 
-        {/* Actions */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setMobileMenu(!mobileMenu)}
-            className="md:hidden text-gray-800 dark:text-gray-300 hover:text-pink-400 transition-colors"
-          >
-            {mobileMenu ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenu(!mobileMenu)}
+          className="lg:hidden text-gray-200 hover:text-sky-400 transition-colors p-2"
+          aria-label="Toggle mobile menu"
+        >
+          {mobileMenu ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenu && (
-        <div className="md:hidden bg-gradient-to-br from-black/80 via-purple-900/70 to-pink-800/60 backdrop-blur-lg px-6 py-6 text-gray-200 space-y-4">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={(e) => handleNavClick(e, item.id)}
-              className="block text-lg font-semibold hover:text-pink-400 text-left w-full"
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileMenu && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 
+                       border-t border-slate-800 px-4 sm:px-6 py-6 space-y-4 shadow-md"
+          >
+            {navItems.map((item, i) => (
+              <motion.button
+                key={item.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className="block text-lg font-semibold text-gray-200 hover:text-sky-400 text-left w-full transition-colors duration-300"
+              >
+                {item.label}
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
