@@ -1,44 +1,22 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { Sun, Moon, Menu, X } from "lucide-react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
-// ============ 3D Logo ============
-function RotatingCube() {
-  const meshRef = useRef();
-  useFrame((state, delta) => {
-    meshRef.current.rotation.y += delta * 0.6;
-    meshRef.current.rotation.x += delta * 0.3;
-  });
-  return (
-    <mesh ref={meshRef} scale={1.1}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial
-        color="#ff4d6d"
-        metalness={0.6}
-        roughness={0.2}
-      />
-    </mesh>
-  );
-}
-
-// ============ Navbar ============
 export default function Navbar() {
   const [mobileMenu, setMobileMenu] = useState(false);
 
-  const handleNavClick = (e, id) => {
-    e.preventDefault();
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  // Simple scroll function that works on all devices
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navHeight = 80;
+      const elementPosition = element.offsetTop - navHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
     setMobileMenu(false);
-  };
-
-  const handleLogoClick = (e) => {
-    e.preventDefault();
-    const el = document.getElementById("hero");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   const navItems = [
@@ -51,84 +29,57 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/20 dark:bg-black/30 border-b border-white/10 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-        {/* Left Logo with 3D */}
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10">
-            <Canvas camera={{ position: [2, 2, 3], fov: 40 }}>
-              <ambientLight intensity={1.2} />
-              <pointLight position={[3, 3, 3]} intensity={1} />
-              <RotatingCube />
-              <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
-            </Canvas>
-          </div>
-          <motion.h1
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent cursor-pointer"
-            onClick={handleLogoClick}
-          >
-            Dipesh's <span className="ml-1">Portfolio</span>
-          </motion.h1>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-slate-950 shadow-lg border-b border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <div
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer"
+          onClick={() => scrollToSection("hero")}
+        >
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg shadow-md"></div>
+          <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent">
+            Dipesh's Portfolio
+          </h1>
         </div>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-10 font-semibold text-gray-200 dark:text-gray-300 ml-70">
-          {navItems.map((item, i) => (
-            <motion.li
-              key={item.id}
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.15 }}
-            >
-              <a
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className="hover:text-pink-400 transition-colors duration-300"
+        <ul className="hidden lg:flex space-x-6 xl:space-x-8 font-semibold text-gray-200">
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <button
+                onClick={() => scrollToSection(item.id)}
+                className="hover:text-sky-400 transition-colors duration-300 cursor-pointer"
               >
                 {item.label}
-              </a>
-            </motion.li>
+              </button>
+            </li>
           ))}
         </ul>
 
-        {/* Actions */}
-        <div className="flex items-center gap-4">
-          <motion.button
-            onClick={() => setMobileMenu(!mobileMenu)}
-            whileTap={{ scale: 0.9 }}
-            className="md:hidden text-gray-300 hover:text-pink-400 transition-colors"
-          >
-            {mobileMenu ? <X size={28} /> : <Menu size={28} />}
-          </motion.button>
-        </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenu(!mobileMenu)}
+          className="lg:hidden text-gray-200 hover:text-sky-400 transition-colors p-2"
+          aria-label="Toggle mobile menu"
+        >
+          {mobileMenu ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
-      {/* Mobile Menu with Animation */}
-      <AnimatePresence>
-        {mobileMenu && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="md:hidden bg-gradient-to-br from-black/80 via-purple-900/70 to-pink-800/60 backdrop-blur-lg px-6 py-6 text-gray-200 space-y-4"
-          >
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className="block text-lg font-semibold hover:text-pink-400"
-              >
-                {item.label}
-              </a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu */}
+      {mobileMenu && (
+        <div className="lg:hidden bg-slate-950 border-t border-slate-800 px-4 sm:px-6 py-6 space-y-4">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="block text-lg font-semibold text-gray-200 hover:text-sky-400 text-left w-full transition-colors duration-300 py-2"
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
